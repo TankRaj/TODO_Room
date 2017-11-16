@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">TODO: Room</string>
     <string name="action_settings">Settings</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="date">Date</string>
+    <string name="type">Type</string>
 </resources>

@@ -5,21 +5,20 @@
     android:orientation="vertical"
     android:tag="cards main container">
 
-    <android.support.v7.widget.CardView
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         card_view:cardBackgroundColor="@android:color/white"
-        card_view:cardCornerRadius="4dp"
-        card_view:cardElevation="5dp"
+        card_view:cardCornerRadius="@dimen/four"
+        card_view:cardElevation="@dimen/five"
         card_view:cardUseCompatPadding="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:background="@drawable/bg_card_gradient"
+            android:orientation="vertical">
 
 
             <TextView
@@ -27,39 +26,44 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:text="Android Name"
-                android:textAppearance="?android:attr/textAppearanceLarge"/>
-
-            <TextView
-                android:id="@+id/tvDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:text="Android Version"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                android:layout_marginTop="@dimen/ten"
+                android:text="@string/title"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="@dimen/textTwentyFour" />
 
             <TextView
                 android:id="@+id/tvBody"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:text="Android Name"
-                android:textAppearance="?android:attr/textAppearanceLarge"/>
+                android:layout_marginTop="@dimen/ten"
+                android:text="@string/description"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="@dimen/textEighteen" />
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/ten"
+                android:text="@string/date"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="@dimen/textSixteen" />
+
 
             <TextView
                 android:id="@+id/tvType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:text="Android Version"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                android:layout_marginTop="@dimen/ten"
+                android:text="@string/type"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="@dimen/textFourteen" />
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
 
-        </LinearLayout>
+</LinearLayout>

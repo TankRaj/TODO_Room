@@ -1,3 +1,10 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="four">4dp</dimen>
+    <dimen name="five">5dp</dimen>
+    <dimen name="ten">10dp</dimen>
+    <dimen name="textTwentyFour">24sp</dimen>
+    <dimen name="textEighteen">18sp</dimen>
+    <dimen name="textSixteen">16sp</dimen>
+    <dimen name="textFourteen">14sp</dimen>
 </resources>
