@@ -41,6 +41,9 @@ dependencies {
 //    CARDVIEW
     implementation 'com.android.support:cardview-v7:26.1.0'
 
+//    CIRCULAR IMAGEVIEW
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+
 
 
     testImplementation 'junit:junit:4.12'
