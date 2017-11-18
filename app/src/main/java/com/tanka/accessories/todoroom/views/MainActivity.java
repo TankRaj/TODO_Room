@@ -1,6 +1,9 @@
 package com.tanka.accessories.todoroom.views;
 
 import android.app.Dialog;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -21,7 +24,9 @@ import android.widget.EditText;
 import com.tanka.accessories.todoroom.R;
 import com.tanka.accessories.todoroom.data.model.Note;
 import com.tanka.accessories.todoroom.data.room.AppDataBase;
+import com.tanka.accessories.todoroom.views.widget.NoteWidgetActivity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import static android.text.TextUtils.isEmpty;
@@ -105,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         db.getNotesDao().insertAll(note);
         noteList.add(note);
         adapter.notifyDataSetChanged();
+        setWidgetWithArray(noteList);
 
     }
 
@@ -126,8 +132,24 @@ public class MainActivity extends AppCompatActivity {
                 noteList = notes;
                 adapter = new NotesAdapter(MainActivity.this, noteList);
                 recyclerView.setAdapter(adapter);
+
+                NoteWidgetActivity.setNotesOnWidgetList(noteList);
+                Intent intent1 = new Intent(MainActivity.this,
+                        NoteWidgetActivity.class);
+                intent1.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+                sendBroadcast(intent1);
+
+
             }
         }.execute();
+    }
+
+    private void setWidgetWithArray(List<Note> noteList) {
+        NoteWidgetActivity.setNotesOnWidgetList(noteList);
+        Intent intent1 = new Intent(MainActivity.this,
+                NoteWidgetActivity.class);
+        intent1.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+        sendBroadcast(intent1);
     }
 
     @Override
@@ -151,5 +173,6 @@ public class MainActivity extends AppCompatActivity {
         db.getNotesDao().deleteAll(item);
         noteList.remove(item);
         adapter.notifyDataSetChanged();
+        setWidgetWithArray(noteList);
     }
 }
