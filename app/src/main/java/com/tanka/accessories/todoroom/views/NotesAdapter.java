@@ -1,10 +1,12 @@
 package com.tanka.accessories.todoroom.views;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +48,17 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         holder.body.setText(itemList.get(listPosition).getBody());
         holder.type.setText(itemList.get(listPosition).getType());
 
+        AnimationDrawable animationDrawable = (AnimationDrawable) holder.contentLayout.getBackground();
+        if (listPosition%2==0){
+            animationDrawable.setEnterFadeDuration(2500);
+            animationDrawable.setExitFadeDuration(2500);
+        }else {
+            animationDrawable.setEnterFadeDuration(5000);
+            animationDrawable.setExitFadeDuration(10000);
+        }
+
+        animationDrawable.start();
+
         holder.itemView.setOnClickListener(v -> {
             Toast.makeText(activity,itemList.get(listPosition).getTitle(),Toast.LENGTH_LONG).show();
         });
@@ -60,6 +73,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         public TextView date;
         public TextView body;
         public TextView type;
+        private LinearLayout contentLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -68,6 +82,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             date = itemView.findViewById(R.id.tvDate);
             body = itemView.findViewById(R.id.tvBody);
             type = itemView.findViewById(R.id.tvType);
+            contentLayout = itemView.findViewById(R.id.contentLayout);
+
         }
 
         @Override

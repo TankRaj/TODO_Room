@@ -5,6 +5,6 @@
     <string name="description">Description</string>
     <string name="date">Date</string>
     <string name="type">Type</string>
-    <string name="appwidget_text">EXAMPLE</string>
+    <string name="appwidget_text">No task yet, add new</string>
     <string name="add_widget">Add widget</string>
 </resources>

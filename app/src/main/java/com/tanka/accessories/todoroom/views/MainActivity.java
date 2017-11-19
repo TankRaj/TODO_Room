@@ -1,8 +1,14 @@
 package com.tanka.accessories.todoroom.views;
 
 import android.app.Dialog;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -17,10 +23,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RemoteViews;
 
 import com.tanka.accessories.todoroom.R;
 import com.tanka.accessories.todoroom.data.model.Note;
 import com.tanka.accessories.todoroom.data.room.AppDataBase;
+import com.tanka.accessories.todoroom.utility.Utils;
+import com.tanka.accessories.todoroom.widget.NoteWidget;
 
 import java.util.List;
 
@@ -33,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private List<Note> noteList;
+    private Bitmap bmProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         db = AppDataBase.getDatabase(this);
+
+        Bitmap bm = BitmapFactory.decodeResource(getResources(),
+                R.drawable.tanks_suited);
+        bmProfile = Utils.getCircleBitmap(bm);
 
         recyclerView = findViewById(R.id.my_recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -105,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
         db.getNotesDao().insertAll(note);
         noteList.add(note);
         adapter.notifyDataSetChanged();
+        updateWidget(noteList);
 
     }
 
@@ -126,8 +141,23 @@ public class MainActivity extends AppCompatActivity {
                 noteList = notes;
                 adapter = new NotesAdapter(MainActivity.this, noteList);
                 recyclerView.setAdapter(adapter);
+
+
+                updateWidget(noteList);
+
             }
         }.execute();
+    }
+
+    private void updateWidget(List<Note> noteList) {
+        Context context = MainActivity.this;
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.note_widget);
+        ComponentName thisWidget = new ComponentName(context, NoteWidget.class);
+        if (!noteList.isEmpty())
+        remoteViews.setTextViewText(R.id.appwidget_text, noteList.get(0).getTitle());
+        remoteViews.setImageViewBitmap(R.id.image_profile, bmProfile);
+        appWidgetManager.updateAppWidget(thisWidget, remoteViews);
     }
 
     @Override
@@ -151,5 +181,6 @@ public class MainActivity extends AppCompatActivity {
         db.getNotesDao().deleteAll(item);
         noteList.remove(item);
         adapter.notifyDataSetChanged();
+        updateWidget(noteList);
     }
 }

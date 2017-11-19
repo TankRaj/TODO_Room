@@ -1,0 +1,23 @@
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:drawable="@drawable/bg_gradient_blue_bright"
+        android:duration="5000"/>
+
+    <item
+        android:drawable="@drawable/bg_gradient_mix_color"
+        android:duration="5000"/>
+
+    <item
+        android:drawable="@drawable/bg_gradient_green_bright"
+        android:duration="5000"/>
+
+    <!--<item-->
+        <!--android:drawable="@drawable/grad_purple"-->
+        <!--android:duration="5000"/>-->
+
+    <!--<item-->
+        <!--android:drawable="@drawable/grad_indigo"-->
+        <!--android:duration="5000"/>-->
+
+</animation-list>

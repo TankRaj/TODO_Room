@@ -1,21 +1,40 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#09C"
+    android:background="@android:color/transparent"
     android:padding="@dimen/widget_margin">
 
+    <ImageView
+        android:id="@+id/image_profile"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:padding="8dp"
+        android:layout_gravity="center"
+        android:src="@mipmap/ic_launcher"
+        />
+
+    <ImageView
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:scaleType="fitCenter"
+        android:layout_gravity="center"
+        android:src="@drawable/shape_triangle"
+        />
     <TextView
         android:id="@+id/appwidget_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="8dp"
-        android:background="#09C"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:background="@drawable/bg_quote_widget"
+        android:gravity="center"
         android:contentDescription="@string/appwidget_text"
         android:text="@string/appwidget_text"
-        android:textColor="#ffffff"
-        android:textSize="24sp"
+        android:textColor="@android:color/holo_purple"
+        android:layout_gravity="center"
+        android:textSize="16sp"
         android:textStyle="bold|italic" />
 
-</RelativeLayout>
+</LinearLayout>
