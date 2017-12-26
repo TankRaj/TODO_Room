@@ -1,8 +1,11 @@
 package com.tanka.accessories.todoroom.views;
 
+import android.content.DialogInterface;
 import android.graphics.drawable.AnimationDrawable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +26,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     private List<Note> itemList;
     MainActivity activity;
+    private static final long DOUBLE_CLICK_TIME_DELTA = 300;
+    private long lastClickTime = 0;
 
     public NotesAdapter(MainActivity activity, List<Note> itemList) {
         this.itemList = itemList;
@@ -60,12 +65,36 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         animationDrawable.start();
 
         holder.itemView.setOnClickListener(v -> {
-            Toast.makeText(activity,itemList.get(listPosition).getTitle(),Toast.LENGTH_LONG).show();
+//            activity.showCustomToast(itemList.get(listPosition).getTitle());
+            long clickTime = System.currentTimeMillis();
+            if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA){
+                activity.editNote(itemList.get(listPosition));
+            } else {
+                activity.showCustomToast(itemList.get(listPosition).getTitle());
+            }
+            lastClickTime = clickTime;
+
         });
         holder.itemView.setOnLongClickListener(v -> {
-            deleteItem(itemList.get(listPosition));
+            showDeleteDialog(listPosition);
+//            deleteItem(itemList.get(listPosition));
             return true;
         });
+    }
+
+    private void showDeleteDialog(int listPosition) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(R.string.text_delete);
+        builder.setMessage(R.string.info_delete);
+        builder.setPositiveButton(R.string.yes, (dialog, which) -> {
+
+            deleteItem(itemList.get(listPosition));
+            dialog.dismiss();
+        });
+        builder.setNegativeButton(R.string.no, (dialog, which) -> {
+            dialog.dismiss();
+        });
+        builder.show();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

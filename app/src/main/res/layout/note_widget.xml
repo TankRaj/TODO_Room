@@ -8,7 +8,6 @@
         android:id="@+id/image_profile"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:padding="8dp"
         android:layout_gravity="center"
         android:src="@mipmap/ic_launcher"
         />
@@ -32,7 +31,7 @@
         android:gravity="center"
         android:contentDescription="@string/appwidget_text"
         android:text="@string/appwidget_text"
-        android:textColor="@android:color/holo_purple"
+        android:textColor="@color/Honeydew"
         android:layout_gravity="center"
         android:textSize="16sp"
         android:textStyle="bold|italic" />

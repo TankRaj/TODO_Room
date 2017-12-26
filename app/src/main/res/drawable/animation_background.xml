@@ -4,9 +4,9 @@
         android:drawable="@drawable/bg_gradient_blue_bright"
         android:duration="5000"/>
 
-    <item
-        android:drawable="@drawable/bg_gradient_mix_color"
-        android:duration="5000"/>
+    <!--<item-->
+        <!--android:drawable="@drawable/bg_gradient_mix_color"-->
+        <!--android:duration="5000"/>-->
 
     <item
         android:drawable="@drawable/bg_gradient_green_bright"

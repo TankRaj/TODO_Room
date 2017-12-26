@@ -26,6 +26,12 @@ public interface NoteDao {
     @Query("SELECT * FROM note")
     List<Note> getAllNotes();
 
+    @Query("SELECT * FROM note where title LIKE :keyword")
+    List<Note> getNote(String keyword);
+
     @Delete
     void deleteAll(Note... notes);
+
+    @Update
+    void editNote(Note note);
 }

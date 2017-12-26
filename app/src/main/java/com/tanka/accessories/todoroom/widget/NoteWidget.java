@@ -60,10 +60,6 @@ public class NoteWidget extends AppWidgetProvider {
             }
                     }
         }
-//        for(int j = 0; j < appWidgetIds.length; j++)
-//        {
-//
-//        }
     }
 
     @Override

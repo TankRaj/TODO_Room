@@ -12,6 +12,16 @@ import java.util.Date;
 @Entity
 public class Note {
 
+    public Note() {
+    }
+
+    public Note(String title, String date, String body, String type) {
+        this.title = title;
+        this.date = date;
+        this.body = body;
+        this.type = type;
+    }
+
     @PrimaryKey(autoGenerate = true)
     public int id;
 

@@ -9,7 +9,8 @@
             android:pivotY="140%">
             <shape
                 android:shape="rectangle" >
-                <stroke android:color="@android:color/holo_purple" android:width="1dp"/>
+                <stroke android:color="@color/Honeydew"
+                    android:width="1dp"/>
                 <!--<solid-->
                 <!--android:color="@android:color/holo_purple" />-->
             </shape>
