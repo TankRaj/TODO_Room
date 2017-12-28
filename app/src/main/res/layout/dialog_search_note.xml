@@ -34,6 +34,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Type title"
                 android:maxLines="1"
+                android:inputType="text"
                 android:textColor="@color/colorPrimary"
                 android:textColorHint="@android:color/darker_gray"
                 android:textSize="14sp" />

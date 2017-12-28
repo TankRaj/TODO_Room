@@ -3,6 +3,7 @@ package com.tanka.accessories.todoroom.data.model;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Date;
  */
 
 @Entity
-public class Note {
+public class Note implements Serializable{
 
     public Note() {
     }

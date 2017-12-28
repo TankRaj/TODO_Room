@@ -405,7 +405,7 @@ public class MainActivity extends AppCompatActivity {
 
             } else {
 
-                updateNoteInDb(title, date, body, type);
+                updateNoteInDb(note,title, date, body, type);
                 dialog.dismiss();
             }
 
@@ -423,11 +423,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void updateNoteInDb(String title, String date, String body, String type) {
+    private void updateNoteInDb(Note note,String title, String date, String body, String type) {
 
-        Note note = new Note(title,date,body,type);
+//        Note note = new Note(title,date,body,type);
 
-        db.getNotesDao().editNote(note);
+//        db.getNotesDao().editNote(note);
+        db.getNotesDao().updateNote(note.id,title,body,date,type);
 
 
     }

@@ -1,7 +1,9 @@
 package com.tanka.accessories.todoroom.views;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
+import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import com.tanka.accessories.todoroom.R;
 import com.tanka.accessories.todoroom.data.model.Note;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -49,8 +52,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int listPosition) {
         holder.title.setText(itemList.get(listPosition).getTitle());
-        holder.date.setText(itemList.get(listPosition).getDate());
-        holder.body.setText(itemList.get(listPosition).getBody());
+        holder.date.setText(itemList.get(listPosition).getBody());
+        holder.body.setText(itemList.get(listPosition).getDate());
         holder.type.setText(itemList.get(listPosition).getType());
 
         AnimationDrawable animationDrawable = (AnimationDrawable) holder.contentLayout.getBackground();
@@ -65,12 +68,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         animationDrawable.start();
 
         holder.itemView.setOnClickListener(v -> {
-//            activity.showCustomToast(itemList.get(listPosition).getTitle());
             long clickTime = System.currentTimeMillis();
             if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA){
                 activity.editNote(itemList.get(listPosition));
             } else {
-                activity.showCustomToast(itemList.get(listPosition).getTitle());
+                Note note = itemList.get(listPosition);
+                Intent intent = new Intent(activity,NoteDetail.class);
+                intent.putExtra("note",note);
+                activity.startActivity(intent);
+//                activity.showCustomToast(itemList.get(listPosition).getTitle());
             }
             lastClickTime = clickTime;
 

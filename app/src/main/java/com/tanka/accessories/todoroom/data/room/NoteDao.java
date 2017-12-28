@@ -34,4 +34,7 @@ public interface NoteDao {
 
     @Update
     void editNote(Note note);
+
+    @Query("UPDATE Note SET `title` = :txTitle, `body` = :txBody, `date` = :txDate, `type` = :txType   WHERE id = :tid")
+    void updateNote(long tid, String txTitle, String txBody, String txDate, String txType);
 }

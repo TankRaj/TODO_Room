@@ -34,6 +34,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".views.NoteDetail"/>
 
         <receiver android:name=".widget.NoteWidget">
             <intent-filter>
