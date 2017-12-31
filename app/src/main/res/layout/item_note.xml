@@ -28,8 +28,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/ten"
-                android:maxLines="1"
                 android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingLeft="8dp"
                 android:text="@string/title"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="@dimen/textTwentyFour" />
@@ -40,8 +41,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/ten"
-                android:text="@string/description"
                 android:background="@android:color/holo_purple"
+                android:padding="8dp"
+                android:text="@string/description"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textSize="@dimen/textEighteen" />
 
@@ -52,9 +54,9 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/ten"
                 android:text="@string/date"
-                android:visibility="gone"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textSize="@dimen/textSixteen" />
+                android:textSize="@dimen/textSixteen"
+                android:visibility="gone" />
 
 
             <TextView
@@ -63,10 +65,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/ten"
-                android:visibility="gone"
                 android:text="@string/type"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textSize="@dimen/textFourteen" />
+                android:textSize="@dimen/textFourteen"
+                android:visibility="gone" />
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

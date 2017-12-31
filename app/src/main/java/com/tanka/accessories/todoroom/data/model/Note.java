@@ -11,7 +11,7 @@ import java.util.Date;
  */
 
 @Entity
-public class Note implements Serializable{
+public class Note implements Serializable {
 
     public Note() {
     }

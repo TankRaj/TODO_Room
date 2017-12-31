@@ -1,11 +1,16 @@
 package com.tanka.accessories.todoroom.views;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +21,7 @@ import android.os.Environment;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
@@ -32,16 +38,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.textservice.TextInfo;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.tanka.accessories.todoroom.R;
 import com.tanka.accessories.todoroom.data.model.Note;
 import com.tanka.accessories.todoroom.data.room.AppDataBase;
+import com.tanka.accessories.todoroom.services.AlarmReceiver;
 import com.tanka.accessories.todoroom.utility.Utils;
 import com.tanka.accessories.todoroom.widget.NoteWidget;
 
@@ -50,6 +60,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Calendar;
 import java.util.List;
 
 import static android.text.TextUtils.isEmpty;
@@ -89,6 +100,10 @@ public class MainActivity extends AppCompatActivity {
         fab = findViewById(R.id.fab);
         fabSearch = findViewById(R.id.fabSearch);
         fab.setOnClickListener(view -> showAddDialog());
+
+        ColorStateList csl = new ColorStateList(new int[][]{new int[0]}, new int[]{0xff1E90FF});
+        fab.setBackgroundTintList(csl);
+
         fabSearch.setOnClickListener((View view) -> {
 
             String textInfo = "Click on the toolbar search bitch!!!";
@@ -120,16 +135,64 @@ public class MainActivity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_add_note);
 
+        Calendar calendar = Calendar.getInstance();
+
         final EditText etTitle = dialog.findViewById(R.id.etTitle);
-        final EditText etDate = dialog.findViewById(R.id.etDate);
+        final TextView tvDate = dialog.findViewById(R.id.tvDate);
+        final TextView tvTime = dialog.findViewById(R.id.tvTime);
         final EditText etBody = dialog.findViewById(R.id.etBody);
         final EditText etType = dialog.findViewById(R.id.etType);
         Button btnSend = dialog.findViewById(R.id.btnAdd);
+
+        tvTime.setOnClickListener(v -> {
+            // TODO Auto-generated method stub
+
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minute = calendar.get(Calendar.MINUTE);
+            TimePickerDialog mTimePicker;
+            mTimePicker = new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                    tvTime.setText(selectedHour + ":" + selectedMinute);
+
+                }
+            }, hour, minute, true);//Yes 24 hour time
+            mTimePicker.setTitle("Select Time");
+            mTimePicker.show();
+
+        });
+
+        tvDate.setOnClickListener(v -> {
+            // TODO Auto-generated method stub
+//            Calendar mcurrentTime = Calendar.getInstance();
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            int month = calendar.get(Calendar.MONTH) + 1;
+            int year = calendar.get(Calendar.YEAR);
+            DatePickerDialog mDatePicker;
+            mDatePicker = new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    tvDate.setText(dayOfMonth + ":" + (month + 1) + ":" + year);
+                }
+
+            }, year, month, day);
+            mDatePicker.setTitle("Select Date");
+            mDatePicker.show();
+
+        });
         btnSend.setOnClickListener(v -> {
             final String title = etTitle.getText().toString();
-            final String date = etDate.getText().toString();
+            final String date = tvDate.getText().toString();
             final String body = etBody.getText().toString();
             final String type = etType.getText().toString();
+
+            AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(this, AlarmReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+            // cal.add(Calendar.SECOND, 5);
+            alarmMgr.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
+            Log.d("ALARMBUILDER",calendar.toString());
             if (isEmpty(title) || title.equalsIgnoreCase("")) {
 
             } else {
@@ -390,7 +453,7 @@ public class MainActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.dialog_add_note);
 
         final EditText etTitle = dialog.findViewById(R.id.etTitle);
-        final EditText etDate = dialog.findViewById(R.id.etDate);
+        final TextView tvDate = dialog.findViewById(R.id.tvDate);
         final EditText etBody = dialog.findViewById(R.id.etBody);
         final EditText etType = dialog.findViewById(R.id.etType);
         Button btnSend = dialog.findViewById(R.id.btnAdd);
@@ -398,14 +461,14 @@ public class MainActivity extends AppCompatActivity {
         etTitle.setText(note.getTitle());
         btnSend.setOnClickListener(v -> {
             final String title = etTitle.getText().toString();
-            final String date = etDate.getText().toString();
+            final String date = tvDate.getText().toString();
             final String body = etBody.getText().toString();
             final String type = etType.getText().toString();
             if (isEmpty(title) || title.equalsIgnoreCase("")) {
 
             } else {
 
-                updateNoteInDb(note,title, date, body, type);
+                updateNoteInDb(note, title, date, body, type);
                 dialog.dismiss();
             }
 
@@ -423,12 +486,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void updateNoteInDb(Note note,String title, String date, String body, String type) {
+    private void updateNoteInDb(Note note, String title, String date, String body, String type) {
 
 //        Note note = new Note(title,date,body,type);
 
 //        db.getNotesDao().editNote(note);
-        db.getNotesDao().updateNote(note.id,title,body,date,type);
+        db.getNotesDao().updateNote(note.id, title, body, date, type);
 
 
     }

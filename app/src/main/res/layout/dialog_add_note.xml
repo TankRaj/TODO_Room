@@ -1,100 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/title_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
         android:background="@color/colorPrimary"
         android:gravity="center"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
         android:text="ADD NOTE"
         android:textColor="@android:color/white"
-        android:textStyle="bold"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-     >
+        android:layout_height="wrap_content">
 
-
-        <android.support.design.widget.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
-            <EditText
-                android:id="@+id/etTitle"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/etTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:background="@drawable/bg_white_square"
+                    android:drawableLeft="@android:drawable/button_onoff_indicator_on"
+                    android:drawablePadding="8dp"
+                    android:drawableRight="@android:drawable/button_onoff_indicator_on"
+                    android:drawableTint="@color/colorPrimary"
+                    android:gravity="center"
+                    android:hint="Title"
+                    android:maxLines="1"
+                    android:textColor="@color/colorPrimary"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:textSize="14sp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tvDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@android:color/darker_gray"
-                android:hint="Title"
-                android:maxLines="1"
-                android:textColor="@color/colorPrimary"
-                android:textSize="14sp" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_white_square"
+                android:drawableLeft="@android:drawable/ic_menu_my_calendar"
+                android:drawablePadding="16dp"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:text="Select Date"
+                android:textSize="16sp" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-            <EditText
-                android:id="@+id/etDate"
+            <TextView
+                android:id="@+id/tvTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@android:color/darker_gray"
-                android:hint="Date"
-                android:maxLines="1"
-                android:textColor="@color/colorPrimary"
-                android:textSize="14sp" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_white_square"
+                android:drawableLeft="@android:drawable/ic_lock_idle_alarm"
+                android:drawablePadding="32dp"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:text="Select Time"
+                android:textSize="16sp" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-            <EditText
-                android:id="@+id/etBody"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@android:color/darker_gray"
-                android:hint="Body"
-                android:maxLines="1"
-                android:textColor="@color/colorPrimary"
-                android:textSize="14sp" />
-        </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-            <EditText
-                android:id="@+id/etType"
+                android:layout_marginTop="16dp">
+
+                <EditText
+                    android:id="@+id/etBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="92dp"
+                    android:background="@drawable/bg_white_square"
+                    android:gravity="top|left"
+                    android:hint="Body"
+                    android:maxLines="1"
+                    android:padding="8dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:textSize="14sp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@android:color/darker_gray"
-                android:hint="Type"
-                android:maxLines="1"
-                android:textColor="@color/colorPrimary"
-                android:textSize="14sp" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_marginTop="16dp">
 
-        <Button
-            android:id="@+id/btnAdd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:background="@android:color/holo_purple"
-            android:backgroundTint="@android:color/holo_purple"
-            android:text="Save"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textStyle="normal" />
-    </LinearLayout>
+                <EditText
+                    android:id="@+id/etType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Type(Urgent or Normal)"
+                    android:maxLines="1"
+                    android:textColor="@color/colorPrimary"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:textSize="14sp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnAdd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@android:color/holo_blue_light"
+                android:text="Save"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+        </LinearLayout>
+
+    </ScrollView>
 </LinearLayout>
