@@ -18,5 +18,6 @@
         android:orderInCategory="100"
         android:title="@string/search_note"
         app:showAsAction="always"
+        android:iconTint="@color/White"
         android:icon="@android:drawable/ic_menu_search"/>
 </menu>

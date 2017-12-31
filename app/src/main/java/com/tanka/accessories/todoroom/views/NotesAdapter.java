@@ -11,6 +11,7 @@ import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,15 +53,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int listPosition) {
         holder.title.setText(itemList.get(listPosition).getTitle());
-        holder.date.setText(itemList.get(listPosition).getBody());
-        holder.body.setText(itemList.get(listPosition).getDate());
+        holder.date.setText(itemList.get(listPosition).getDate());
+        holder.body.setText(itemList.get(listPosition).getBody());
         holder.type.setText(itemList.get(listPosition).getType());
 
         AnimationDrawable animationDrawable = (AnimationDrawable) holder.contentLayout.getBackground();
-        if (listPosition%2==0){
+        if (listPosition % 2 == 0) {
             animationDrawable.setEnterFadeDuration(2500);
             animationDrawable.setExitFadeDuration(2500);
-        }else {
+        } else {
             animationDrawable.setEnterFadeDuration(5000);
             animationDrawable.setExitFadeDuration(10000);
         }
@@ -68,23 +69,20 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         animationDrawable.start();
 
         holder.itemView.setOnClickListener(v -> {
-            long clickTime = System.currentTimeMillis();
-            if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA){
-                activity.editNote(itemList.get(listPosition));
-            } else {
-                Note note = itemList.get(listPosition);
-                Intent intent = new Intent(activity,NoteDetail.class);
-                intent.putExtra("note",note);
-                activity.startActivity(intent);
-//                activity.showCustomToast(itemList.get(listPosition).getTitle());
-            }
-            lastClickTime = clickTime;
+
+            Note note = itemList.get(listPosition);
+            Intent intent = new Intent(activity, NoteDetail.class);
+            intent.putExtra("note", note);
+            activity.startActivity(intent);
 
         });
         holder.itemView.setOnLongClickListener(v -> {
             showDeleteDialog(listPosition);
-//            deleteItem(itemList.get(listPosition));
             return true;
+        });
+
+        holder.ivEdit.setOnClickListener(v -> {
+            activity.editNote(itemList.get(listPosition));
         });
     }
 
@@ -108,6 +106,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         public TextView date;
         public TextView body;
         public TextView type;
+        public ImageView ivEdit;
         private LinearLayout contentLayout;
 
         public ViewHolder(View itemView) {
@@ -116,6 +115,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             title = itemView.findViewById(R.id.tvTitle);
             date = itemView.findViewById(R.id.tvDate);
             body = itemView.findViewById(R.id.tvBody);
+            ivEdit = itemView.findViewById(R.id.ivEdit);
             type = itemView.findViewById(R.id.tvType);
             contentLayout = itemView.findViewById(R.id.contentLayout);
 
@@ -128,6 +128,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
 
     }
+
     private void deleteItem(Note item) {
         activity.deleteNote(item);
 

@@ -42,6 +42,7 @@ import android.view.textservice.TextInfo;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.TextView;
@@ -183,18 +184,18 @@ public class MainActivity extends AppCompatActivity {
             final String body = etBody.getText().toString();
             final String type = etType.getText().toString();
 
-            AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(this, AlarmReceiver.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
-            // cal.add(Calendar.SECOND, 5);
-            alarmMgr.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+//            AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//            Intent intent = new Intent(this, AlarmReceiver.class);
+//            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+//            // cal.add(Calendar.SECOND, 5);
+//            alarmMgr.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 
-            Log.d("ALARMBUILDER", calendar.toString());
+//            Log.d("ALARMBUILDER", calendar.toString());
             if (isEmpty(title) || title.equalsIgnoreCase("")) {
 
             } else {
 
-                addNote(title, date, body, type);
+                addNote(title, body, date, type);
                 dialog.dismiss();
             }
 
@@ -217,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.dialog_search_note);
 
         final EditText etTitle = dialog.findViewById(R.id.etTitle);
-        Button btnSend = dialog.findViewById(R.id.btnAdd);
+        ImageButton btnSend = dialog.findViewById(R.id.btnAdd);
         btnSend.setOnClickListener(v -> {
             final String title = "%" + etTitle.getText().toString() + "%";
             if (isEmpty(title) || title.equalsIgnoreCase("%%")) {
@@ -236,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
         lp.copyFrom(dialog.getWindow().getAttributes());
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        lp.gravity = Gravity.CENTER;
+        lp.gravity = Gravity.TOP;
         lp.dimAmount = 0.6f;
         dialog.getWindow().setAttributes(lp);
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
@@ -465,7 +466,16 @@ public class MainActivity extends AppCompatActivity {
 
             } else {
 
-                updateNoteInDb(note, title, date, body, type);
+                Note note1 = new Note();
+                note1.setId(note.getId());
+                note1.setTitle(title);
+                note1.setBody(body);
+                note1.setDate(date);
+                note1.setType(type);
+
+                db.getNotesDao().updateAll(note1);
+                loadNotes();
+
                 dialog.dismiss();
             }
 
