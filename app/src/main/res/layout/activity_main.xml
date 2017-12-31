@@ -39,6 +39,6 @@
         android:tint="@android:color/white"
         android:visibility="gone"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_search_category_default" />
+        app:srcCompat="@android:drawable/ic_delete" />
 
 </android.support.design.widget.CoordinatorLayout>

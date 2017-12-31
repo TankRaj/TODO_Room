@@ -106,10 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
         fabSearch.setOnClickListener((View view) -> {
 
-            String textInfo = "Click on the toolbar search bitch!!!";
-
-            showCustomToast(textInfo);
-
+            loadNotes();
             fabSearch.setVisibility(View.GONE);
 
         });
@@ -186,13 +183,13 @@ public class MainActivity extends AppCompatActivity {
             final String body = etBody.getText().toString();
             final String type = etType.getText().toString();
 
-            AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+            AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(this, AlarmReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
             // cal.add(Calendar.SECOND, 5);
             alarmMgr.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 
-            Log.d("ALARMBUILDER",calendar.toString());
+            Log.d("ALARMBUILDER", calendar.toString());
             if (isEmpty(title) || title.equalsIgnoreCase("")) {
 
             } else {
@@ -229,7 +226,6 @@ public class MainActivity extends AppCompatActivity {
             } else {
 
                 isSearch = true;
-                fabSearch.setImageDrawable(ContextCompat.getDrawable(this, android.R.drawable.ic_delete));
                 searchNote(title);
                 dialog.dismiss();
             }
@@ -262,6 +258,7 @@ public class MainActivity extends AppCompatActivity {
                 noteList = notes;
                 adapter = new NotesAdapter(MainActivity.this, noteList);
                 recyclerView.setAdapter(adapter);
+                fabSearch.setVisibility(View.VISIBLE);
 
             }
         }.execute();
@@ -346,9 +343,9 @@ public class MainActivity extends AppCompatActivity {
         } else if (id == R.id.search_note) {
             if (isSearch) {
 
-                fabSearch.setImageDrawable(ContextCompat.getDrawable(this, android.R.drawable.ic_menu_search));
                 loadNotes();
                 isSearch = false;
+
             } else {
                 showSearchDialog();
             }
@@ -489,7 +486,6 @@ public class MainActivity extends AppCompatActivity {
     private void updateNoteInDb(Note note, String title, String date, String body, String type) {
 
 //        Note note = new Note(title,date,body,type);
-
 //        db.getNotesDao().editNote(note);
         db.getNotesDao().updateNote(note.id, title, body, date, type);
 
