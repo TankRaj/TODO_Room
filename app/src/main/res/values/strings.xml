@@ -5,7 +5,14 @@
     <string name="description">Description</string>
     <string name="date">Date</string>
     <string name="type">Type</string>
-    <string name="appwidget_text">EXAMPLE</string>
+    <string name="appwidget_text">No task yet, add new</string>
     <string name="add_widget">Add widget</string>
-    <string name="note_widget">Note widget</string>
+    <string name="change_pp">Change Picture</string>
+    <string name="text_delete">Are you sure want to delete?</string>
+    <string name="info_delete">Once you delete the notes, you wont be able to reverse the action.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="search_note">Search note</string>
+    <string name="stop_alarm">STOP</string>
+
 </resources>

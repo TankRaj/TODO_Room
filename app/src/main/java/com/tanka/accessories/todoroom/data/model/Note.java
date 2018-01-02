@@ -1,8 +1,10 @@
 package com.tanka.accessories.todoroom.data.model;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,16 +12,41 @@ import java.util.Date;
  */
 
 @Entity
-public class Note {
+public class Note implements Serializable {
+
+//    public Note() {
+//    }
+//
+//    public Note(String title, String date, String body, String type) {
+//        this.title = title;
+//        this.date = date;
+//        this.body = body;
+//        this.type = type;
+//    }
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
     public int id;
 
+    @ColumnInfo(name = "title")
     public String title;
+
+    @ColumnInfo(name = "date")
     public String date;
+
+    @ColumnInfo(name = "body")
     public String body;
+
+    @ColumnInfo(name = "type")
     public String type;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;

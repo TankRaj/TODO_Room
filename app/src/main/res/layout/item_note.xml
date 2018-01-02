@@ -15,28 +15,48 @@
         card_view:cardUseCompatPadding="true">
 
         <LinearLayout
+            android:id="@+id/contentLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_card_gradient"
+            android:background="@drawable/animation_background"
             android:orientation="vertical">
 
-
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/ten"
-                android:text="@string/title"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="@dimen/textTwentyFour" />
+                android:orientation="horizontal"
+                android:paddingLeft="8dp">
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/title"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="@dimen/textTwentyFour" />
+
+                <ImageView
+                    android:id="@+id/ivEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:src="@android:drawable/ic_menu_edit"
+                    android:tint="@color/MediumSlateBlue" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tvBody"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/ten"
+                android:background="@android:color/holo_purple"
+                android:padding="8dp"
                 android:text="@string/description"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textSize="@dimen/textEighteen" />
@@ -49,7 +69,8 @@
                 android:layout_marginTop="@dimen/ten"
                 android:text="@string/date"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textSize="@dimen/textSixteen" />
+                android:textSize="@dimen/textSixteen"
+                android:visibility="gone" />
 
 
             <TextView
@@ -60,7 +81,8 @@
                 android:layout_marginTop="@dimen/ten"
                 android:text="@string/type"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textSize="@dimen/textFourteen" />
+                android:textSize="@dimen/textFourteen"
+                android:visibility="gone" />
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
