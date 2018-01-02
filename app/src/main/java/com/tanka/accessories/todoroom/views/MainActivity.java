@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Note> noteList;
     private Bitmap bmProfile;
     private static int RESULT_LOAD_IMAGE = 1;
+    private Calendar reminderCal;
     private boolean isSearch;
     FloatingActionButton fab, fabSearch;
 
@@ -84,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        reminderCal = Calendar.getInstance();
 
         db = AppDataBase.getDatabase(this);
 
@@ -147,11 +150,17 @@ public class MainActivity extends AppCompatActivity {
 
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
             int minute = calendar.get(Calendar.MINUTE);
+
+
             TimePickerDialog mTimePicker;
             mTimePicker = new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                     tvTime.setText(selectedHour + ":" + selectedMinute);
+
+//                    reminderCal.add(Calendar.HOUR_OF_DAY,selectedHour);
+//                    reminderCal.add(Calendar.MINUTE,selectedMinute);
+                    reminderCal.add(Calendar.SECOND,5);
 
                 }
             }, hour, minute, true);//Yes 24 hour time
@@ -161,16 +170,19 @@ public class MainActivity extends AppCompatActivity {
         });
 
         tvDate.setOnClickListener(v -> {
-            // TODO Auto-generated method stub
-//            Calendar mcurrentTime = Calendar.getInstance();
             int day = calendar.get(Calendar.DAY_OF_MONTH);
-            int month = calendar.get(Calendar.MONTH) + 1;
+            int month = calendar.get(Calendar.MONTH);
             int year = calendar.get(Calendar.YEAR);
+
             DatePickerDialog mDatePicker;
             mDatePicker = new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
                 @Override
-                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    tvDate.setText(dayOfMonth + ":" + (month + 1) + ":" + year);
+                public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int dayOfMonth) {
+                    tvDate.setText(dayOfMonth + ":" + (selectedMonth + 1) + ":" + selectedYear);
+
+//                    reminderCal.add(Calendar.YEAR,year);
+//                    reminderCal.add(Calendar.MONTH,month);
+//                    reminderCal.add(Calendar.DAY_OF_MONTH,dayOfMonth);
                 }
 
             }, year, month, day);
@@ -184,13 +196,15 @@ public class MainActivity extends AppCompatActivity {
             final String body = etBody.getText().toString();
             final String type = etType.getText().toString();
 
-//            AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-//            Intent intent = new Intent(this, AlarmReceiver.class);
-//            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
-//            // cal.add(Calendar.SECOND, 5);
-//            alarmMgr.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            Intent intent = new Intent(this, AlarmReceiverActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                    12345, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+            AlarmManager am =
+                    (AlarmManager)getSystemService(Activity.ALARM_SERVICE);
+            am.set(AlarmManager.RTC_WAKEUP, reminderCal.getTimeInMillis(),
+                    pendingIntent);
 
-//            Log.d("ALARMBUILDER", calendar.toString());
+
             if (isEmpty(title) || title.equalsIgnoreCase("")) {
 
             } else {

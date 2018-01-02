@@ -13,4 +13,5 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="search_note">Search note</string>
+    <string name="stop_alarm">STOP</string>
 </resources>
