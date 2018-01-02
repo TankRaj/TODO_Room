@@ -35,18 +35,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+      
         <activity android:name=".views.NoteDetail"/>
 
         <receiver android:name=".widget.NoteWidget">
+
+        <receiver android:name=".views.widget.NoteWidgetActivity">
+          
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
+
                 android:resource="@xml/note_widget_info" />
         </receiver>
         <receiver android:name=".services.AlarmReceiver" android:process=":remote" />
+                android:resource="@xml/note_widget_activity_info" />
+        </receiver>
     </application>
 
 </manifest>

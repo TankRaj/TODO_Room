@@ -43,8 +43,10 @@ dependencies {
 
 //    LOTTIE
     implementation 'com.airbnb.android:lottie:2.5.0-beta1'
-
-
+    
+//    CIRCULAR IMAGEVIEW
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

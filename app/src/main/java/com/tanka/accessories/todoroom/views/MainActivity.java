@@ -52,6 +52,7 @@ import android.widget.Toast;
 import com.tanka.accessories.todoroom.R;
 import com.tanka.accessories.todoroom.data.model.Note;
 import com.tanka.accessories.todoroom.data.room.AppDataBase;
+
 import com.tanka.accessories.todoroom.services.AlarmReceiver;
 import com.tanka.accessories.todoroom.utility.Utils;
 import com.tanka.accessories.todoroom.widget.NoteWidget;
@@ -62,6 +63,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
+
+import com.tanka.accessories.todoroom.views.widget.NoteWidgetActivity;
+
+import java.io.Serializable;
+
 import java.util.List;
 
 import static android.text.TextUtils.isEmpty;
@@ -289,8 +295,8 @@ public class MainActivity extends AppCompatActivity {
         db.getNotesDao().insertAll(note);
         noteList.add(note);
         adapter.notifyDataSetChanged();
+      
         updateWidget(noteList, null);
-
     }
 
     @Override
@@ -319,6 +325,7 @@ public class MainActivity extends AppCompatActivity {
 
                 updateWidget(noteList, null);
 
+
             }
         }.execute();
     }
@@ -336,6 +343,7 @@ public class MainActivity extends AppCompatActivity {
             remoteViews.setImageViewBitmap(R.id.image_profile, bitmap);
         }
         appWidgetManager.updateAppWidget(thisWidget, remoteViews);
+
     }
 
     @Override
@@ -512,6 +520,7 @@ public class MainActivity extends AppCompatActivity {
 //        Note note = new Note(title,date,body,type);
 //        db.getNotesDao().editNote(note);
         db.getNotesDao().updateNote(note.id, title, body, date, type);
+
 
 
     }
