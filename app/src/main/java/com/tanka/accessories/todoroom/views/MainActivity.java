@@ -10,40 +10,36 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.ContactsContract;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.design.internal.NavigationMenu;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.textservice.TextInfo;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -52,38 +48,37 @@ import android.widget.Toast;
 import com.tanka.accessories.todoroom.R;
 import com.tanka.accessories.todoroom.data.model.Note;
 import com.tanka.accessories.todoroom.data.room.AppDataBase;
-
-import com.tanka.accessories.todoroom.services.AlarmReceiver;
 import com.tanka.accessories.todoroom.utility.Utils;
+import com.tanka.accessories.todoroom.views.helper.OnStartDragListener;
+import com.tanka.accessories.todoroom.views.helper.SimpleItemTouchHelperCallback;
 import com.tanka.accessories.todoroom.widget.NoteWidget;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
-
-import com.tanka.accessories.todoroom.views.widget.NoteWidgetActivity;
-
-import java.io.Serializable;
-
 import java.util.List;
+
+import io.github.yavski.fabspeeddial.FabSpeedDial;
+import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
 
 import static android.text.TextUtils.isEmpty;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnStartDragListener {
 
     private NotesAdapter adapter;
     private AppDataBase db;
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
-    private List<Note> noteList;
+    private ItemTouchHelper mItemTouchHelper;
+    private List<Note> noteList = new ArrayList<>();
     private Bitmap bmProfile;
     private static int RESULT_LOAD_IMAGE = 1;
     private Calendar reminderCal;
     private boolean isSearch;
-    FloatingActionButton fab, fabSearch;
+    FloatingActionButton fabSearch;
+    FabSpeedDial fabSpeedDial;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,16 +98,38 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.my_recycler_view);
         recyclerView.setHasFixedSize(true);
 
+        recyclerView.setAdapter(adapter);
+
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        fab = findViewById(R.id.fab);
-        fabSearch = findViewById(R.id.fabSearch);
-        fab.setOnClickListener(view -> showAddDialog());
 
-        ColorStateList csl = new ColorStateList(new int[][]{new int[0]}, new int[]{0xff1E90FF});
-        fab.setBackgroundTintList(csl);
+        fabSpeedDial = findViewById(R.id.fabNew);
+        fabSearch = findViewById(R.id.fabSearch);
+
+        fabSpeedDial.setMenuListener(new SimpleMenuListenerAdapter() {
+            @Override
+            public boolean onPrepareMenu(NavigationMenu navigationMenu) {
+                getMenuInflater().inflate(R.menu.fab_menu, navigationMenu);
+                setMenuBackground();
+                return true;
+            }
+        });
+
+        fabSpeedDial.setMenuListener(new SimpleMenuListenerAdapter() {
+            @Override
+            public boolean onMenuItemSelected(MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                if (id == R.id.action_text) {
+                    showAddDialog();
+                } else if (id == R.id.action_story) {
+
+                }
+
+                return super.onMenuItemSelected(menuItem);
+            }
+        });
 
         fabSearch.setOnClickListener((View view) -> {
 
@@ -152,7 +169,6 @@ public class MainActivity extends AppCompatActivity {
         Button btnSend = dialog.findViewById(R.id.btnAdd);
 
         tvTime.setOnClickListener(v -> {
-            // TODO Auto-generated method stub
 
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
             int minute = calendar.get(Calendar.MINUTE);
@@ -166,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
 
 //                    reminderCal.add(Calendar.HOUR_OF_DAY,selectedHour);
 //                    reminderCal.add(Calendar.MINUTE,selectedMinute);
-                    reminderCal.add(Calendar.SECOND,5);
+                    reminderCal.add(Calendar.SECOND, 5);
 
                 }
             }, hour, minute, true);//Yes 24 hour time
@@ -206,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
             PendingIntent pendingIntent = PendingIntent.getActivity(this,
                     12345, intent, PendingIntent.FLAG_CANCEL_CURRENT);
             AlarmManager am =
-                    (AlarmManager)getSystemService(Activity.ALARM_SERVICE);
+                    (AlarmManager) getSystemService(Activity.ALARM_SERVICE);
             am.set(AlarmManager.RTC_WAKEUP, reminderCal.getTimeInMillis(),
                     pendingIntent);
 
@@ -277,7 +293,12 @@ public class MainActivity extends AppCompatActivity {
                     noteList.clear();
 
                 noteList = notes;
-                adapter = new NotesAdapter(MainActivity.this, noteList);
+                adapter = new NotesAdapter(MainActivity.this, noteList, MainActivity.this);
+
+                ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+                mItemTouchHelper = new ItemTouchHelper(callback);
+                mItemTouchHelper.attachToRecyclerView(recyclerView);
+
                 recyclerView.setAdapter(adapter);
                 fabSearch.setVisibility(View.VISIBLE);
 
@@ -295,7 +316,7 @@ public class MainActivity extends AppCompatActivity {
         db.getNotesDao().insertAll(note);
         noteList.add(note);
         adapter.notifyDataSetChanged();
-      
+
         updateWidget(noteList, null);
     }
 
@@ -319,7 +340,12 @@ public class MainActivity extends AppCompatActivity {
                     noteList.clear();
 
                 noteList = notes;
-                adapter = new NotesAdapter(MainActivity.this, noteList);
+                adapter = new NotesAdapter(MainActivity.this, noteList, MainActivity.this);
+
+                ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+                mItemTouchHelper = new ItemTouchHelper(callback);
+                mItemTouchHelper.attachToRecyclerView(recyclerView);
+
                 recyclerView.setAdapter(adapter);
 
 
@@ -388,7 +414,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Uri uri = null;
         if (requestCode == RESULT_LOAD_IMAGE) {
             if (resultCode == RESULT_OK) {
                 if (data != null) {
@@ -515,13 +540,41 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void updateNoteInDb(Note note, String title, String date, String body, String type) {
 
-//        Note note = new Note(title,date,body,type);
-//        db.getNotesDao().editNote(note);
-        db.getNotesDao().updateNote(note.id, title, body, date, type);
+    protected void setMenuBackground() {
+        // Log.d(TAG, "Enterting setMenuBackGround");
+        getLayoutInflater().setFactory(new LayoutInflater.Factory() {
+            public View onCreateView(String name, Context context, AttributeSet attrs) {
+                if (name.equalsIgnoreCase("com.android.internal.view.menu.fab_menu")) {
+                    try { // Ask our inflater to create the view
+                        LayoutInflater f = getLayoutInflater();
+                        final View view = f.createView(name, null, attrs);
+                        /* The background gets refreshed each time a new item is added the options menu.
+                        * So each time Android applies the default background we need to set our own
+                        * background. This is done using a thread giving the background change as runnable
+                        * object */
+                        new Handler().post(new Runnable() {
+                            public void run() {
+                                // sets the background color
+                                view.setBackgroundResource(android.R.color.transparent);
+                                // sets the text color
+                                ((TextView) view).setTextColor(Color.BLACK);
+                                // sets the text size
+                                ((TextView) view).setTextSize(18);
+                            }
+                        });
+                        return view;
+                    } catch (InflateException e) {
+                    } catch (ClassNotFoundException e) {
+                    }
+                }
+                return null;
+            }
+        });
+    }
 
-
-
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        mItemTouchHelper.startDrag(viewHolder);
     }
 }

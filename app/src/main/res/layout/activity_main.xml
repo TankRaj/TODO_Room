@@ -22,23 +22,37 @@
 
     <include layout="@layout/content_main" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <!--<android.support.design.widget.FloatingActionButton-->
+    <!--android:id="@+id/fab"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="bottom|end"-->
+    <!--android:layout_margin="@dimen/fab_margin"-->
+    <!--android:tint="@android:color/white"-->
+    <!--app:srcCompat="@android:drawable/ic_input_add" />-->
+
+    <io.github.yavski.fabspeeddial.FabSpeedDial
+        android:id="@+id/fabNew"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:tint="@android:color/white"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:fabBackgroundTint="#ff1E90FF"
+        app:fabGravity="bottom_end"
+
+        app:fabMenu="@menu/fab_menu"
+        app:miniFabBackgroundTint="#ff1E90FF"
+        app:miniFabDrawableTint="@android:color/white"
+        app:miniFabTitleTextColor="#ff1E90FF" />
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|start"
+        android:layout_margin="@dimen/fab_margin"
         android:tint="@android:color/white"
         android:visibility="gone"
-        android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_delete" />
 
 </android.support.design.widget.CoordinatorLayout>

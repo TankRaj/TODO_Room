@@ -1,41 +1,45 @@
 package com.tanka.accessories.todoroom.views;
 
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
-import android.os.Parcelable;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tanka.accessories.todoroom.R;
 import com.tanka.accessories.todoroom.data.model.Note;
+import com.tanka.accessories.todoroom.views.helper.ItemTouchHelperAdapter;
+import com.tanka.accessories.todoroom.views.helper.ItemTouchHelperViewHolder;
+import com.tanka.accessories.todoroom.views.helper.OnStartDragListener;
 
-import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by access-tanka on 11/16/17.
  */
 
-public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
+public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> implements ItemTouchHelperAdapter {
 
     private List<Note> itemList;
     MainActivity activity;
     private static final long DOUBLE_CLICK_TIME_DELTA = 300;
     private long lastClickTime = 0;
+    private final OnStartDragListener mDragStartListener;
 
-    public NotesAdapter(MainActivity activity, List<Note> itemList) {
+    public NotesAdapter(MainActivity activity, List<Note> itemList,OnStartDragListener dragStartListener) {
         this.itemList = itemList;
         this.activity = activity;
+        mDragStartListener = dragStartListener;
     }
 
     @Override
@@ -84,6 +88,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         holder.ivEdit.setOnClickListener(v -> {
             activity.editNote(itemList.get(listPosition));
         });
+
+        // Start a drag whenever the handle view it touched
+        holder.title.setOnTouchListener((v, event) -> {
+            if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                mDragStartListener.onStartDrag(holder);
+            }
+            return false;
+        });
     }
 
     private void showDeleteDialog(int listPosition) {
@@ -101,7 +113,20 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         builder.show();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        Collections.swap(itemList, fromPosition, toPosition);
+        notifyItemMoved(fromPosition, toPosition);
+        return true;
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        itemList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,ItemTouchHelperViewHolder {
         public TextView title;
         public TextView date;
         public TextView body;
@@ -127,6 +152,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         }
 
 
+        @Override
+        public void onItemSelected() {
+            itemView.setBackgroundColor(Color.LTGRAY);
+        }
+
+        @Override
+        public void onItemClear() {
+            itemView.setBackgroundColor(0);
+        }
     }
 
     private void deleteItem(Note item) {

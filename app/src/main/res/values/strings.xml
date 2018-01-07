@@ -14,5 +14,7 @@
     <string name="no">No</string>
     <string name="search_note">Search note</string>
     <string name="stop_alarm">STOP</string>
+    <string name="menu_item_text_note">Text Note</string>
+    <string name="menu_item_story">Story</string>
 
 </resources>
