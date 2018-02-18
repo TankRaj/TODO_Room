@@ -22,28 +22,6 @@
 
     <include layout="@layout/content_main" />
 
-    <!--<android.support.design.widget.FloatingActionButton-->
-    <!--android:id="@+id/fab"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="bottom|end"-->
-    <!--android:layout_margin="@dimen/fab_margin"-->
-    <!--android:tint="@android:color/white"-->
-    <!--app:srcCompat="@android:drawable/ic_input_add" />-->
-
-    <io.github.yavski.fabspeeddial.FabSpeedDial
-        android:id="@+id/fabNew"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        app:fabBackgroundTint="#ff1E90FF"
-        app:fabGravity="bottom_end"
-
-        app:fabMenu="@menu/fab_menu"
-        app:miniFabBackgroundTint="#ff1E90FF"
-        app:miniFabDrawableTint="@android:color/white"
-        app:miniFabTitleTextColor="#ff1E90FF" />
-
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabSearch"
@@ -54,5 +32,48 @@
         android:tint="@android:color/white"
         android:visibility="gone"
         app:srcCompat="@android:drawable/ic_delete" />
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/fabMenuOptions"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        app:fab_colorNormal="@color/caldroid_holo_blue_light"
+        app:fab_colorPressed="@color/colorPrimaryDark"
+        app:fab_colorRipple="@color/colorPrimaryDark"
+        app:menu_backgroundColor="@color/backgroundFabClicked"
+        app:menu_colorNormal="@color/caldroid_holo_blue_light"
+        app:menu_colorPressed="@color/colorPrimaryDark"
+        app:menu_colorRipple="@color/colorPrimaryDark"
+        app:menu_labels_ellipsize="end"
+        app:menu_labels_position="left"
+        app:menu_labels_customFont="fonts/dancing_font.otf"
+        app:menu_labels_singleLine="true"
+        app:menu_labels_style="@style/MenuLabelsStyle"
+        app:menu_shadowColor="@android:color/transparent">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fabNew"
+            style="@style/MenuButtonsStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/note"
+            app:fab_label="@string/menu_item_text_note"
+            app:fab_size="normal" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fabStory"
+            style="@style/MenuButtonsStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/story"
+            app:fab_label="@string/menu_item_story"
+            app:fab_size="normal" />
+
+    </com.github.clans.fab.FloatingActionMenu>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,62 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/contentLayout"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/contentLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/animation_background"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
-
-    <TextView
-        android:id="@+id/tvTitle"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/ten"
-        android:background="@android:color/holo_purple"
-        android:text="@string/title"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="@dimen/textTwentyFour" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tvBody"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/ten"
-        android:text="@string/description"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="@dimen/textEighteen" />
+        <!-- Your FAB implementation -->
+        <com.tanka.accessories.todoroom.utility.Fab
+            android:id="@+id/fab"
+            style="@style/Widget.MaterialSheetFab.Fab"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/keyline_spacing" />
 
-    <TextView
-        android:id="@+id/tvDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/ten"
-        android:text="@string/date"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="@dimen/textSixteen" />
+        <!-- Overlay that dims the screen -->
+        <com.gordonwong.materialsheetfab.DimOverlayFrameLayout
+            android:id="@+id/overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- Circular reveal container for the sheet -->
+        <io.codetail.widget.RevealLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="end|bottom"
+            android:orientation="vertical">
+
+            <!-- Sheet that contains your items -->
+            <android.support.v7.widget.CardView
+                android:id="@+id/fab_sheet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <!-- Sheet items -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Recording -->
+                    <TextView
+                        android:id="@+id/delete"
+                        style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
+                        android:drawableLeft="@android:drawable/ic_menu_delete"
+                        android:drawableStart="@android:drawable/ic_menu_delete"
+                        android:gravity="center"
+                        android:text="Delete" />
+
+                    <TextView
+                        android:id="@+id/edit"
+                        style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
+                        android:drawableLeft="@android:drawable/ic_menu_edit"
+                        android:drawableStart="@android:drawable/ic_menu_edit"
+                        android:gravity="center"
+                        android:text="Edit" />
+
+                    <TextView
+                        android:id="@+id/change_bg"
+                        style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
+                        android:drawableLeft="@android:drawable/ic_btn_speak_now"
+                        android:drawableStart="@android:drawable/ic_btn_speak_now"
+                        android:gravity="center"
+                        android:text="Change BG" />
 
 
-    <TextView
-        android:id="@+id/tvType"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/ten"
-        android:text="@string/type"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="@dimen/textFourteen" />
+                </LinearLayout>
+                <!-- TODO: Put your sheet items here -->
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animation_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white"
-        app:lottie_fileName="city.json"
-        app:lottie_loop="true"
-        app:lottie_autoPlay="true" />
+            </android.support.v7.widget.CardView>
+        </io.codetail.widget.RevealLinearLayout>
 
-</LinearLayout>
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="blue_waves.json"
+            app:lottie_loop="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/sixteen">
+
+                <ImageView
+                    android:id="@+id/ivClose"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/fourty_six"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="center"
+                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                    android:tint="@color/Black" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/one"
+                android:background="@color/Black" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/twenty_four">
+
+
+                <TextView
+                    android:layout_width="@dimen/ninty_six"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="@dimen/sixteen"
+                    android:gravity="left"
+                    android:background="@color/caldroid_holo_blue_light"
+                    android:text="@string/title" />
+
+                <com.tanka.accessories.todoroom.utility.custom_text.VioletEyeTextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:textColor="@color/CornflowerBlue"
+                    android:textSize="@dimen/textTwentyFour" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/sixteen">
+
+
+                <TextView
+                    android:layout_width="@dimen/ninty_six"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="@dimen/sixteen"
+                    android:gravity="left"
+                    android:background="@color/caldroid_holo_blue_light"
+                    android:text="Description" />
+
+                <TextView
+                    android:id="@+id/tvBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="@dimen/ten"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/Black"
+                    android:textSize="@dimen/textTwentyFour" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/sixteen">
+
+
+                <TextView
+                    android:layout_width="@dimen/ninty_six"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="@dimen/sixteen"
+                    android:gravity="left"
+                    android:background="@color/caldroid_holo_blue_light"
+                    android:text="Date" />
+
+                <TextView
+                    android:id="@+id/tvDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="@dimen/ten"
+                    android:gravity="center"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textSize="@dimen/textSixteen" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</FrameLayout>

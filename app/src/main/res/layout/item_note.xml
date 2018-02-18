@@ -28,15 +28,15 @@
                 android:orientation="horizontal"
                 android:paddingLeft="8dp">
 
-                <TextView
+                <com.tanka.accessories.todoroom.utility.custom_text.DancingTextView
                     android:id="@+id/tvTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
                     android:ellipsize="end"
                     android:maxLines="1"
+                    android:textColor="@color/Black"
                     android:text="@string/title"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textSize="@dimen/textTwentyFour" />
 
                 <ImageView

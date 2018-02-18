@@ -10,27 +10,21 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.design.internal.NavigationMenu;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.InflateException;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,6 +39,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionMenu;
 import com.tanka.accessories.todoroom.R;
 import com.tanka.accessories.todoroom.data.model.Note;
 import com.tanka.accessories.todoroom.data.room.AppDataBase;
@@ -53,14 +48,10 @@ import com.tanka.accessories.todoroom.views.helper.OnStartDragListener;
 import com.tanka.accessories.todoroom.views.helper.SimpleItemTouchHelperCallback;
 import com.tanka.accessories.todoroom.widget.NoteWidget;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
-import io.github.yavski.fabspeeddial.FabSpeedDial;
-import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
 
 import static android.text.TextUtils.isEmpty;
 
@@ -70,14 +61,17 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
     private AppDataBase db;
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
+    private GridLayoutManager gridLayoutManager;
     private ItemTouchHelper mItemTouchHelper;
     private List<Note> noteList = new ArrayList<>();
     private Bitmap bmProfile;
     private static int RESULT_LOAD_IMAGE = 1;
     private Calendar reminderCal;
-    private boolean isSearch;
+    private boolean isSearch,isGridLayout;
     FloatingActionButton fabSearch;
-    FabSpeedDial fabSpeedDial;
+//    FabSpeedDial fabSpeedDial;
+    FloatingActionMenu famOpt;
+    com.github.clans.fab.FloatingActionButton fabNote,fabStory;
 
 
     @Override
@@ -101,34 +95,22 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
         recyclerView.setAdapter(adapter);
 
         layoutManager = new LinearLayoutManager(this);
+        gridLayoutManager = new GridLayoutManager(this,2);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-        fabSpeedDial = findViewById(R.id.fabNew);
+        famOpt= findViewById(R.id.fabMenuOptions);
+        fabNote = findViewById(R.id.fabNew);
+        fabStory = findViewById(R.id.fabStory);
+//        fabSpeedDial = findViewById(R.id.fabNew);
         fabSearch = findViewById(R.id.fabSearch);
 
-        fabSpeedDial.setMenuListener(new SimpleMenuListenerAdapter() {
-            @Override
-            public boolean onPrepareMenu(NavigationMenu navigationMenu) {
-                getMenuInflater().inflate(R.menu.fab_menu, navigationMenu);
-                setMenuBackground();
-                return true;
-            }
-        });
+        famOpt.setClosedOnTouchOutside(true);
 
-        fabSpeedDial.setMenuListener(new SimpleMenuListenerAdapter() {
-            @Override
-            public boolean onMenuItemSelected(MenuItem menuItem) {
-                int id = menuItem.getItemId();
-                if (id == R.id.action_text) {
-                    showAddDialog();
-                } else if (id == R.id.action_story) {
-
-                }
-
-                return super.onMenuItemSelected(menuItem);
-            }
+        fabNote.setOnClickListener(v -> {
+            famOpt.close(true);
+            showAddDialog();
         });
 
         fabSearch.setOnClickListener((View view) -> {
@@ -139,20 +121,6 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
         });
     }
 
-    public void showCustomToast(String textInfo) {
-        LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.custom_toast_layout,
-                findViewById(R.id.custom_toast_container));
-
-        TextView text = layout.findViewById(R.id.text);
-        text.setText(textInfo);
-
-        Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(layout);
-        toast.show();
-    }
 
     private void showAddDialog() {
         final Dialog dialog = new Dialog(this);
@@ -398,6 +366,16 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
             } else {
                 showSearchDialog();
             }
+        }else if (id == R.id.change_layout) {
+            if (!isGridLayout) {
+                recyclerView.setLayoutManager(gridLayoutManager);
+                recyclerView.animate();
+                isGridLayout=true;
+            }else {
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.animate();
+                isGridLayout=false;
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -441,49 +419,6 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
         updateWidget(noteList, bitmap);
     }
 
-    private String getRealPathFromUri(Uri tempUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = {MediaStore.Images.Media.DATA};
-            cursor = this.getContentResolver().query(tempUri, proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-    }
-
-    public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight
-                    && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-        return inSampleSize;
-    }
-
-    private Uri getImageUri(Activity youractivity, Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-        String path = MediaStore.Images.Media.insertImage(youractivity.getContentResolver(), bitmap, "Title", null);
-        return Uri.parse(path);
-    }
 
 
     public void editNote(Note note) {
@@ -538,39 +473,6 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
 
-    }
-
-
-    protected void setMenuBackground() {
-        // Log.d(TAG, "Enterting setMenuBackGround");
-        getLayoutInflater().setFactory(new LayoutInflater.Factory() {
-            public View onCreateView(String name, Context context, AttributeSet attrs) {
-                if (name.equalsIgnoreCase("com.android.internal.view.menu.fab_menu")) {
-                    try { // Ask our inflater to create the view
-                        LayoutInflater f = getLayoutInflater();
-                        final View view = f.createView(name, null, attrs);
-                        /* The background gets refreshed each time a new item is added the options menu.
-                        * So each time Android applies the default background we need to set our own
-                        * background. This is done using a thread giving the background change as runnable
-                        * object */
-                        new Handler().post(new Runnable() {
-                            public void run() {
-                                // sets the background color
-                                view.setBackgroundResource(android.R.color.transparent);
-                                // sets the text color
-                                ((TextView) view).setTextColor(Color.BLACK);
-                                // sets the text size
-                                ((TextView) view).setTextSize(18);
-                            }
-                        });
-                        return view;
-                    } catch (InflateException e) {
-                    } catch (ClassNotFoundException e) {
-                    }
-                }
-                return null;
-            }
-        });
     }
 
     @Override

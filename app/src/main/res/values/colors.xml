@@ -144,4 +144,19 @@
     <color name="DarkBlue">#00008B</color>
     <color name="Navy">#000080</color>
     <color name="Black">#000000</color>
+
+    <color name="caldroid_333">#333</color>
+    <color name="caldroid_555">#555</color>
+    <color name="caldroid_black">#000000</color>
+    <color name="caldroid_darker_gray">#aaa</color>
+    <color name="caldroid_gray">#CCC</color>
+    <color name="caldroid_holo_blue_dark">#ff0099cc</color>
+    <color name="caldroid_holo_blue_light">#ff33b5e5</color>
+    <color name="caldroid_light_red">#ff7f7f</color>
+    <color name="caldroid_lighter_gray">#ddd</color>
+    <color name="caldroid_middle_gray">#888</color>
+    <color name="caldroid_sky_blue">#FFA3E8F7</color>
+    <color name="caldroid_transparent">#00000000</color>
+    <color name="caldroid_white">#FFFFFF</color>
+    <color name="backgroundFabClicked">#daffffff</color>
 </resources>

@@ -90,12 +90,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         });
 
         // Start a drag whenever the handle view it touched
-        holder.title.setOnTouchListener((v, event) -> {
-            if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-                mDragStartListener.onStartDrag(holder);
-            }
-            return false;
-        });
+//        holder.title.setOnTouchListener((v, event) -> {
+//            if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+//                mDragStartListener.onStartDrag(holder);
+//            }
+//            return false;
+//        });
     }
 
     private void showDeleteDialog(int listPosition) {

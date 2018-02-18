@@ -43,13 +43,19 @@ dependencies {
 
 //    LOTTIE
     implementation 'com.airbnb.android:lottie:2.5.0-beta1'
-    
+
 //    CIRCULAR IMAGEVIEW
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
 //    EXPANDABLE FAB
     implementation 'io.github.yavski:fab-speed-dial:1.0.6'
-    
+
+//    expandable fab
+    implementation 'com.github.clans:fab:1.6.4'
+
+//    Material FAB
+    implementation 'com.gordonwong:material-sheet-fab:1.2.1'
+
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

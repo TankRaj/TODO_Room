@@ -14,6 +14,12 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/change_layout"
+        android:orderInCategory="100"
+        android:title="@string/turn_grid"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/search_note"
         android:orderInCategory="100"
         android:title="@string/search_note"

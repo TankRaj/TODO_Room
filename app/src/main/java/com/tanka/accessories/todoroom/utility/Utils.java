@@ -16,11 +16,21 @@ import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.util.AttributeSet;
+import android.view.Gravity;
+import android.view.InflateException;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.tanka.accessories.todoroom.R;
+
+import java.io.ByteArrayOutputStream;
 
 /**
  * Created by access-tanka on 11/16/17.
@@ -34,6 +44,98 @@ public class Utils {
         dialog = new MaterialDialog.Builder(context)
                 .content("Loading....")
                 .show();
+    }
+
+    public void showCustomToast(String textInfo,Activity context) {
+        LayoutInflater inflater = context.getLayoutInflater();
+        View layout = inflater.inflate(R.layout.custom_toast_layout,
+                context.findViewById(R.id.custom_toast_container));
+
+        TextView text = layout.findViewById(R.id.text);
+        text.setText(textInfo);
+
+        Toast toast = new Toast(context.getApplicationContext());
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
+    }
+
+    private String getRealPathFromUri(Uri tempUri,Activity activity) {
+        Cursor cursor = null;
+        try {
+            String[] proj = {MediaStore.Images.Media.DATA};
+            cursor = activity.getContentResolver().query(tempUri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    protected void setMenuBackground(Activity activity) {
+        // Log.d(TAG, "Enterting setMenuBackGround");
+        activity.getLayoutInflater().setFactory(new LayoutInflater.Factory() {
+            public View onCreateView(String name, Context context, AttributeSet attrs) {
+                if (name.equalsIgnoreCase("com.android.internal.view.menu.fab_menu")) {
+                    try { // Ask our inflater to create the view
+                        LayoutInflater f = activity.getLayoutInflater();
+                        final View view = f.createView(name, null, attrs);
+                        /* The background gets refreshed each time a new item is added the options menu.
+                        * So each time Android applies the default background we need to set our own
+                        * background. This is done using a thread giving the background change as runnable
+                        * object */
+                        new Handler().post(new Runnable() {
+                            public void run() {
+                                // sets the background color
+                                view.setBackgroundResource(android.R.color.transparent);
+                                // sets the text color
+                                ((TextView) view).setTextColor(Color.BLACK);
+                                // sets the text size
+                                ((TextView) view).setTextSize(18);
+                            }
+                        });
+                        return view;
+                    } catch (InflateException e) {
+                    } catch (ClassNotFoundException e) {
+                    }
+                }
+                return null;
+            }
+        });
+    }
+
+
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+        return inSampleSize;
+    }
+
+    private Uri getImageUri(Activity youractivity, Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        String path = MediaStore.Images.Media.insertImage(youractivity.getContentResolver(), bitmap, "Title", null);
+        return Uri.parse(path);
     }
 
     public static void dismissDialog() {
