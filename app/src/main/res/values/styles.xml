@@ -59,4 +59,9 @@
     <item name="android:drawablePadding">@dimen/sheet_item_image_spacing</item>
     </style>
 
+    <style name="MyCheckBox" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/caldroid_sky_blue</item>
+        <item name="colorControlActivated">@color/DodgerBlue</item>
+    </style>
+
 </resources>

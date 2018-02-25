@@ -10,6 +10,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -67,11 +68,13 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
     private Bitmap bmProfile;
     private static int RESULT_LOAD_IMAGE = 1;
     private Calendar reminderCal;
-    private boolean isSearch,isGridLayout;
+    private boolean isSearch, isGridLayout;
+    private final String layoutFlag = "isLinear";
+    SharedPreferences prefs;
     FloatingActionButton fabSearch;
-//    FabSpeedDial fabSpeedDial;
+    //    FabSpeedDial fabSpeedDial;
     FloatingActionMenu famOpt;
-    com.github.clans.fab.FloatingActionButton fabNote,fabStory;
+    com.github.clans.fab.FloatingActionButton fabNote, fabStory;
 
 
     @Override
@@ -80,6 +83,12 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        prefs = this.getSharedPreferences(
+                "com.tanka.accessories.todoroom", Context.MODE_PRIVATE);
+
+
 
         reminderCal = Calendar.getInstance();
 
@@ -95,12 +104,17 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
         recyclerView.setAdapter(adapter);
 
         layoutManager = new LinearLayoutManager(this);
-        gridLayoutManager = new GridLayoutManager(this,2);
-        recyclerView.setLayoutManager(layoutManager);
+        gridLayoutManager = new GridLayoutManager(this, 2);
+
+        if (!prefs.getBoolean(layoutFlag, false))
+            recyclerView.setLayoutManager(layoutManager);
+        else
+            recyclerView.setLayoutManager(gridLayoutManager);
+
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-        famOpt= findViewById(R.id.fabMenuOptions);
+        famOpt = findViewById(R.id.fabMenuOptions);
         fabNote = findViewById(R.id.fabNew);
         fabStory = findViewById(R.id.fabStory);
 //        fabSpeedDial = findViewById(R.id.fabNew);
@@ -133,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
         final TextView tvDate = dialog.findViewById(R.id.tvDate);
         final TextView tvTime = dialog.findViewById(R.id.tvTime);
         final EditText etBody = dialog.findViewById(R.id.etBody);
-        final EditText etType = dialog.findViewById(R.id.etType);
         Button btnSend = dialog.findViewById(R.id.btnAdd);
 
         tvTime.setOnClickListener(v -> {
@@ -184,7 +197,6 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
             final String title = etTitle.getText().toString();
             final String date = tvDate.getText().toString();
             final String body = etBody.getText().toString();
-            final String type = etType.getText().toString();
 
             Intent intent = new Intent(this, AlarmReceiverActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(this,
@@ -199,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
 
             } else {
 
-                addNote(title, body, date, type);
+                addNote(title, body, date, null);
                 dialog.dismiss();
             }
 
@@ -366,15 +378,18 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
             } else {
                 showSearchDialog();
             }
-        }else if (id == R.id.change_layout) {
+        } else if (id == R.id.change_layout) {
+
             if (!isGridLayout) {
                 recyclerView.setLayoutManager(gridLayoutManager);
                 recyclerView.animate();
-                isGridLayout=true;
-            }else {
+                isGridLayout = true;
+                prefs.edit().putBoolean(layoutFlag,isGridLayout);
+            } else {
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.animate();
-                isGridLayout=false;
+                isGridLayout = false;
+                prefs.edit().putBoolean(layoutFlag,isGridLayout);
             }
         }
 
@@ -420,7 +435,6 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
     }
 
 
-
     public void editNote(Note note) {
 
         showEditDialog(note);
@@ -435,7 +449,6 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
         final EditText etTitle = dialog.findViewById(R.id.etTitle);
         final TextView tvDate = dialog.findViewById(R.id.tvDate);
         final EditText etBody = dialog.findViewById(R.id.etBody);
-        final EditText etType = dialog.findViewById(R.id.etType);
         Button btnSend = dialog.findViewById(R.id.btnAdd);
 
         etTitle.setText(note.getTitle());
@@ -443,7 +456,6 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
             final String title = etTitle.getText().toString();
             final String date = tvDate.getText().toString();
             final String body = etBody.getText().toString();
-            final String type = etType.getText().toString();
             if (isEmpty(title) || title.equalsIgnoreCase("")) {
 
             } else {
@@ -453,7 +465,6 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
                 note1.setTitle(title);
                 note1.setBody(body);
                 note1.setDate(date);
-                note1.setType(type);
 
                 db.getNotesDao().updateAll(note1);
                 loadNotes();

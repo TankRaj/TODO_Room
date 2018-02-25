@@ -48,4 +48,5 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="note_title_textsize">24sp</dimen>
     <dimen name="ninty_six">96dp</dimen>
     <dimen name="twenty_four">24dp</dimen>
+    <dimen name="eight">8dp</dimen>
 </resources>
