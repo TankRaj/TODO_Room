@@ -46,9 +46,9 @@ class NoteDetail : AppCompatActivity() {
         val contentLayout = findViewById<FrameLayout>(R.id.contentLayout)
 
         if (note != null) {
-            title.text = note!!.getTitle()
-            body.text = note!!.getBody()
-            date.text = note!!.getDate()
+            title.text = note!!.title
+            body.text = note!!.body
+            date.text = note!!.date
         }
 
         ivClose.setOnClickListener { v -> finish() }

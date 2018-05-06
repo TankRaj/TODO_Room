@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -19,7 +20,7 @@ import java.io.IOException;
  * Created by access-tanka on 1/2/18.
  */
 
-public class AlarmReceiverActivity extends Activity {
+public class AlarmReceiverActivity extends AppCompatActivity {
     private MediaPlayer mMediaPlayer;
 
     @Override
