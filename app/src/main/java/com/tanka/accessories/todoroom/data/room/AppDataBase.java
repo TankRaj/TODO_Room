@@ -11,7 +11,7 @@ import com.tanka.accessories.todoroom.data.model.Note;
  * Created by access-tanka on 11/16/17.
  */
 
-@Database(entities = {Note.class}, version = 1)
+@Database(entities = {Note.class}, version = 1, exportSchema = false)
 public abstract class AppDataBase extends RoomDatabase {
 
     public static final String DB_NAME = "note_db";
