@@ -31,7 +31,7 @@
             android:padding="16dp">
 
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -46,9 +46,9 @@
                     android:textColor="@color/DodgerBlue"
                     android:textColorHint="@android:color/darker_gray"
                     android:textSize="18sp" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp">
@@ -65,7 +65,7 @@
                     android:textColor="@color/DodgerBlue"
                     android:textColorHint="@android:color/darker_gray"
                     android:textSize="14sp" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/tvDate"

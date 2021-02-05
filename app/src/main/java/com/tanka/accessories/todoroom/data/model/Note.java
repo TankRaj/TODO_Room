@@ -1,11 +1,10 @@
 package com.tanka.accessories.todoroom.data.model;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by access-tanka on 11/16/17.

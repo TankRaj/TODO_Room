@@ -32,7 +32,7 @@
             android:orientation="vertical">
 
             <!-- Sheet that contains your items -->
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/fab_sheet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -72,7 +72,7 @@
                 </LinearLayout>
                 <!-- TODO: Put your sheet items here -->
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
         </io.codetail.widget.RevealLinearLayout>
 
         <com.airbnb.lottie.LottieAnimationView
