@@ -2,9 +2,10 @@ package com.tanka.accessories.todoroom.views;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.tanka.accessories.todoroom.R;
 import com.tanka.accessories.todoroom.data.model.Note;
@@ -31,7 +32,7 @@ public class NoteDetail extends AppCompatActivity {
         Intent intent = getIntent();
         note = (Note) intent.getSerializableExtra("note");
 
-        title = findViewById(R.id.tvTitle);
+        title = findViewById          (R.id.tvTitle);
         date = findViewById(R.id.tvDate);
         body = findViewById(R.id.tvBody);
         type = findViewById(R.id.tvType);
