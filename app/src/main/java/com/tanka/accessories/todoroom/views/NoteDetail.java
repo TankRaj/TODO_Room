@@ -30,7 +30,7 @@ public class NoteDetail extends AppCompatActivity {
         setContentView(R.layout.activity_note_detail);
 
         Intent intent = getIntent();
-        note = (Note) intent.getSerializableExtra("note");
+//        note = (Note) intent.getSerializableExtra("note");
 
         title = findViewById          (R.id.tvTitle);
         date = findViewById(R.id.tvDate);

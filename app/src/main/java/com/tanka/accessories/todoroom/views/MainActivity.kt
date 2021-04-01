@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         reminderCal = Calendar.getInstance()
-        db = AppDataBase.getDatabase(this)
+       /* db = AppDataBase.getDatabase(this)
         val bm = BitmapFactory.decodeResource(resources,
                 R.drawable.tanks_suited)
         bmProfile = Utils.getCircleBitmap(bm)
@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         fabSearch.setOnClickListener(View.OnClickListener { view: View? ->
             loadNotes()
             fabSearch.setVisibility(View.GONE)
-        })
+        })*/
     }
 
     fun showCustomToast(textInfo: String?) {
@@ -182,7 +182,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun searchNote(title: String) {
-        object : AsyncTask<Void?, Void?, MutableList<Note?>>() {
+        /*object : AsyncTask<Void?, Void?, MutableList<Note?>>() {
             protected override fun doInBackground(vararg params: Void): MutableList<*> {
                 return db.getNotesDao().getNote(title)
             }
@@ -194,11 +194,11 @@ class MainActivity : AppCompatActivity() {
                 recyclerView!!.setAdapter(adapter)
                 fabSearch!!.visibility = View.VISIBLE
             }
-        }.execute()
+        }.execute()*/
     }
 
     private fun addNote(title: String, body: String, date: String, type: String) {
-        val note = Note()
+        /*val note = Note()
         note.setTitle(title)
         note.setBody(body)
         note.setDate(date)
@@ -206,13 +206,14 @@ class MainActivity : AppCompatActivity() {
         db.getNotesDao().insertAll(note)
         noteList!!.add(note)
         adapter.notifyDataSetChanged()
-        updateWidget(noteList, null)
+        updateWidget(noteList, null)*/
     }
 
     override fun onResume() {
         super.onResume()
-        loadNotes()
+//        loadNotes()
     }
+/*
 
     private fun loadNotes() {
         object : AsyncTask<Void?, Void?, MutableList<Note?>>() {
@@ -275,6 +276,7 @@ class MainActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
         updateWidget(noteList, null)
     }
+*/
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -302,7 +304,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadToView(bitmap: Bitmap?) {
-        updateWidget(noteList, bitmap)
+//        updateWidget(noteList, bitmap)
     }
 
     private fun getRealPathFromUri(tempUri: Uri): String {
@@ -344,7 +346,7 @@ class MainActivity : AppCompatActivity() {
             val date = tvDate.text.toString()
             val body = etBody.text.toString()
             val type = etType.text.toString()
-            if (TextUtils.isEmpty(title) || title.equals("", ignoreCase = true)) {
+           /* if (TextUtils.isEmpty(title) || title.equals("", ignoreCase = true)) {
             } else {
                 val note1 = Note()
                 note1.setId(note.id)
@@ -355,7 +357,7 @@ class MainActivity : AppCompatActivity() {
                 db.getNotesDao().updateAll(note1)
                 loadNotes()
                 dialog.dismiss()
-            }
+            }*/
         }
         dialog.show()
         val lp = WindowManager.LayoutParams()
@@ -372,7 +374,7 @@ class MainActivity : AppCompatActivity() {
 
 //        Note note = new Note(title,date,body,type);
 //        db.getNotesDao().editNote(note);
-        db.getNotesDao().updateNote(note.id, title, body, date, type)
+//        db.getNotesDao().updateNote(note.id, title, body, date, type)
     }
 
     companion object {

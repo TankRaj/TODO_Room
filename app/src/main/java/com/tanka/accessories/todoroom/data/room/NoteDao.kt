@@ -25,7 +25,7 @@ interface NoteDao {
     fun updateAll(vararg notes: Note?)
 
     @get:Query("SELECT * FROM note")
-    val allNotes: List<Any?>?
+    val allNotes: List<Note>
 
     @Query("SELECT * FROM note where title LIKE :keyword")
     fun getNote(keyword: String?): List<Note?>?
